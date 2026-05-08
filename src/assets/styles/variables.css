@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #18181B;
+  --color-secondary: #3F3F46;
+  --color-accent: #2563EB;
+  --color-bg: #FAFAFA;
+  --color-text: #09090B;
+  --color-border: #E4E4E7;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+  --color-shadow-hover: rgba(0, 0, 0, 0.15);
+  --color-white: #FFFFFF;
+  --color-muted: #71717A;
+
+  --font-heading: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  --font-body: 'Archivo', 'Noto Sans SC', sans-serif;
+
+  --nav-height: 64px;
+  --card-radius: 0px;
+  --transition-speed: 300ms;
+
+  --max-width: 1200px;
+}
