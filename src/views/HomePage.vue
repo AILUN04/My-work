@@ -34,20 +34,18 @@
           <h1 class="main-title">Welcome to Ding Rongxin's website</h1>
           <p class="subtitle">MENG MU is my online name</p>
         </div>
+
+        <div class="preview-grid">
+          <ProjectCard
+            v-for="(project, i) in featuredProjects"
+            :key="project.id"
+            :title="project.title"
+            :tags="project.tags"
+            :index="i"
+          />
+        </div>
       </div>
     </div>
-
-    <section class="preview-section container">
-      <div class="preview-grid">
-        <ProjectCard
-          v-for="(project, i) in featuredProjects"
-          :key="project.id"
-          :title="project.title"
-          :tags="project.tags"
-          :index="i"
-        />
-      </div>
-    </section>
   </div>
 </template>
 
@@ -93,21 +91,23 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: calc(var(--nav-height) + 40px) 24px 0;
+  padding: calc(var(--nav-height) + 40px) 16px 0;
   display: flex;
-  gap: 40px;
+  gap: 32px;
   align-items: flex-start;
 }
 
+/* Info card: doubled height, left side */
 .info-card {
-  width: 33.33%;
+  width: 280px;
   flex-shrink: 0;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   box-shadow: 0 4px 16px var(--color-shadow);
-  padding: 32px;
+  padding: 48px 32px 80px;
   position: relative;
+  min-height: 560px;
 }
 
 .avatar {
@@ -125,13 +125,13 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .info-label {
@@ -147,13 +147,16 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   font-weight: 500;
 }
 
+/* Right area: title + cards */
 .hero-right {
   flex: 1;
-  padding-top: 20px;
+  min-width: 0;
 }
 
+/* Title moved down by ~2x its own height */
 .title-block {
-  margin-bottom: 40px;
+  padding-top: clamp(5rem, 10vw, 8rem);
+  margin-bottom: 32px;
 }
 
 .main-title {
@@ -173,41 +176,60 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   font-weight: 400;
 }
 
-.preview-section {
-  position: relative;
-  z-index: 1;
-  padding: 60px 24px 80px;
-}
-
+/* Preview grid: cards at half size, 4-5 per row */
 .preview-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
 }
 
 @media (max-width: 1024px) {
   .hero-content {
     flex-direction: column;
+    padding: calc(var(--nav-height) + 24px) 16px 0;
   }
 
   .info-card {
     width: 100%;
+    min-height: auto;
+    padding: 32px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .avatar {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  .info-list {
+    flex: 1;
+    min-width: 200px;
+    margin-top: 0;
   }
 
   .hero-right {
     width: 100%;
   }
+
+  .title-block {
+    padding-top: 24px;
+  }
 }
 
 @media (max-width: 768px) {
   .preview-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .preview-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 }
 </style>
