@@ -91,31 +91,31 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: calc(var(--nav-height) + 40px) 16px 0;
+  padding: calc(var(--nav-height) + 40px) 2vw 0;
   display: flex;
-  gap: 32px;
+  gap: clamp(20px, 3vw, 48px);
   align-items: flex-start;
 }
 
-/* Info card: doubled height, left side */
+/* Info card: responsive width + height */
 .info-card {
-  width: 280px;
+  width: clamp(240px, 18%, 320px);
   flex-shrink: 0;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   box-shadow: 0 4px 16px var(--color-shadow);
-  padding: 48px 32px 80px;
+  padding: clamp(32px, 4%, 48px) clamp(20px, 2.5%, 32px) clamp(60px, 10vh, 100px);
   position: relative;
-  min-height: 560px;
+  min-height: clamp(400px, 55vh, 600px);
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: clamp(60px, 8vw, 80px);
+  height: clamp(60px, 8vw, 80px);
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: clamp(20px, 3%, 24px);
+  right: clamp(16px, 2.5%, 24px);
   border-radius: 0;
   border: 2px solid var(--color-border);
   background: var(--color-border);
@@ -125,7 +125,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: clamp(16px, 2.5vh, 28px);
 }
 
 .info-item {
@@ -135,33 +135,33 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 
 .info-label {
-  font-size: 12px;
+  font-size: clamp(11px, 1vw, 12px);
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .info-value {
-  font-size: 15px;
+  font-size: clamp(13px, 1.2vw, 15px);
   color: var(--color-primary);
   font-weight: 500;
 }
 
-/* Right area: title + cards */
+/* Right area: fills remaining space */
 .hero-right {
   flex: 1;
   min-width: 0;
 }
 
-/* Title moved down by ~2x its own height */
+/* Title */
 .title-block {
-  padding-top: clamp(5rem, 10vw, 8rem);
-  margin-bottom: 32px;
+  padding-top: clamp(3rem, 8vh, 8rem);
+  margin-bottom: clamp(20px, 3vh, 40px);
 }
 
 .main-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
   font-weight: 700;
   color: var(--color-primary);
   line-height: 1.2;
@@ -170,29 +170,29 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 .subtitle {
   font-family: var(--font-heading);
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(1rem, 2vw, 1.4rem);
   color: var(--color-secondary);
   margin-top: 12px;
   font-weight: 400;
 }
 
-/* Preview grid: cards at half size, 4-5 per row */
+/* Preview grid: fluid auto-fill, cards adapt to space */
 .preview-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 14vw, 200px), 1fr));
+  gap: clamp(10px, 1.5vw, 20px);
 }
 
 @media (max-width: 1024px) {
   .hero-content {
     flex-direction: column;
-    padding: calc(var(--nav-height) + 24px) 16px 0;
+    padding: calc(var(--nav-height) + 24px) 3vw 0;
   }
 
   .info-card {
     width: 100%;
     min-height: auto;
-    padding: 32px 24px;
+    padding: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -201,6 +201,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
   .avatar {
     position: static;
+    width: 64px;
+    height: 64px;
     flex-shrink: 0;
   }
 
@@ -208,6 +210,13 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     flex: 1;
     min-width: 200px;
     margin-top: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+  }
+
+  .info-item {
+    flex: 1 1 120px;
   }
 
   .hero-right {
@@ -216,20 +225,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
   .title-block {
     padding-top: 24px;
-  }
-}
-
-@media (max-width: 768px) {
-  .preview-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .preview-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
   }
 }
 </style>

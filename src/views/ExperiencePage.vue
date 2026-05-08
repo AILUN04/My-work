@@ -43,8 +43,8 @@ const filteredExperiences = computed(() => {
 
 .experience-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 14vw, 200px), 1fr));
+  gap: clamp(10px, 1.5vw, 20px);
 }
 
 .empty-msg {
@@ -52,23 +52,5 @@ const filteredExperiences = computed(() => {
   color: var(--color-muted);
   padding: 80px 0;
   font-size: 16px;
-}
-
-@media (max-width: 1024px) {
-  .experience-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .experience-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .experience-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 </style>
