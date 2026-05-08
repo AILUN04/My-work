@@ -89,9 +89,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .hero-content {
   position: relative;
   z-index: 1;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: calc(var(--nav-height) + 40px) 2vw 0;
+  padding: calc(var(--nav-height) + 40px) var(--content-padding) 0;
   display: flex;
   gap: clamp(20px, 3vw, 48px);
   align-items: flex-start;
@@ -179,14 +177,14 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 /* Preview grid: fluid auto-fill, cards adapt to space */
 .preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 14vw, 200px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(clamp(160px, 14vw, 200px), 1fr));
   gap: clamp(10px, 1.5vw, 20px);
 }
 
 @media (max-width: 1024px) {
   .hero-content {
     flex-direction: column;
-    padding: calc(var(--nav-height) + 24px) 3vw 0;
+    padding: calc(var(--nav-height) + 24px) var(--content-padding) 0;
   }
 
   .info-card {

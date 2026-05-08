@@ -40,9 +40,7 @@ button {
 }
 
 .container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 2vw;
+  padding: 0 var(--content-padding);
 }
 
 /* Navbar offset for all pages */

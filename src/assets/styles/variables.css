@@ -19,5 +19,5 @@
   --card-radius: 0px;
   --transition-speed: 300ms;
 
-  --max-width: min(95vw, 1800px);
+  --content-padding: max(16px, 2vw);
 }

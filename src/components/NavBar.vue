@@ -45,9 +45,7 @@ const currentPath = computed(() => route.path)
 }
 
 .navbar-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--content-padding);
   display: flex;
   align-items: center;
   gap: 40px;
