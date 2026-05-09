@@ -91,6 +91,11 @@ function handleScroll() {
   const maxScroll = window.innerHeight * 0.5
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
 
+  // Background dim: progressively darken bg color behind content
+  const maxDimScroll = window.innerHeight * 1.2
+  const dimAlpha = Math.min(0.15, (scrollY / maxDimScroll) * 0.15)
+  document.documentElement.style.setProperty('--dim-alpha', dimAlpha)
+
   // Sequential card reveal
   if (!previewGrid.value) return
   updateCardVisibility()
@@ -138,6 +143,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   if (observer) observer.disconnect()
+  document.documentElement.style.removeProperty('--dim-alpha')
 })
 </script>
 
@@ -146,9 +152,20 @@ onUnmounted(() => {
   min-height: 200vh;
   position: relative;
   background-color: var(--color-bg);
-  /* Gradient dim: darkens toward bottom without hiding the base color */
-  background-image: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.12) 100%);
-  background-attachment: fixed;
+}
+
+/* Scroll-driven dim overlay: sits behind content, darkens background progressively */
+.home-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, var(--dim-alpha, 0));
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.2s ease;
 }
 
 .hero-bg {
