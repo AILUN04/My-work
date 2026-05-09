@@ -196,7 +196,9 @@ onUnmounted(() => {
   top: calc(var(--nav-height) + 24px);
   width: clamp(240px, 18%, 320px);
   flex-shrink: 0;
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   box-shadow: 0 4px 16px var(--color-shadow);
