@@ -79,7 +79,7 @@ let observer = null
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
 
-  // IntersectionObserver for glass box + preview cards animation
+  // IntersectionObserver: glass box triggers early, cards trigger later
   const thresholdSteps = Array.from({ length: 21 }, (_, i) => i * 0.05)
   observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -90,7 +90,9 @@ onMounted(() => {
         glassVisible.value = ratio > 0.05
       }
       if (target === previewGrid.value) {
-        cardsVisible.value = ratio > 0.1
+        // Cards only become visible when scrolled well into view (>= 20%)
+        // and hide when near the top (< 15%)
+        cardsVisible.value = ratio >= 0.2
       }
     })
   }, { threshold: thresholdSteps })
@@ -185,27 +187,27 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
-/* Contact button at bottom of info card */
+/* Contact button: muted, low saturation */
 .contact-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #DBEAFE;
-  color: var(--color-accent);
+  background: rgba(219, 234, 254, 0.5);
+  color: rgba(37, 99, 235, 0.65);
   font-family: var(--font-heading);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 10px 0;
-  border: 1px solid #BFDBFE;
+  border: 1px solid rgba(191, 219, 254, 0.4);
   text-decoration: none;
   transition: background var(--transition-speed) ease,
               color var(--transition-speed) ease;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   margin-top: auto;
 }
 
 .contact-btn:hover {
-  background: var(--color-accent);
+  background: rgba(37, 99, 235, 0.75);
   color: var(--color-white);
   text-decoration: none;
 }
@@ -239,18 +241,22 @@ onUnmounted(() => {
   font-weight: 400;
 }
 
-/* Glass box: between title and cards */
+/* Glass box: 3x height, overlaps card area */
 .glass-box {
-  margin-top: clamp(16px, 2vh, 32px);
-  margin-bottom: clamp(24px, 4vh, 48px);
+  margin-top: clamp(40px, 8vh, 80px);
+  margin-bottom: clamp(40px, 6vh, 64px);
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(228, 228, 231, 0.6);
   border-radius: 0;
-  padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 40px);
+  padding: clamp(48px, 10vh, 96px) clamp(20px, 3vw, 40px);
+  min-height: clamp(180px, 25vh, 320px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -265,19 +271,19 @@ onUnmounted(() => {
   font-size: clamp(14px, 1.2vw, 18px);
   color: var(--color-secondary);
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
-/* Preview grid: moved down, scroll animation */
+/* Preview grid: hidden initially, large scroll animation */
 .preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 12vw, 180px), 1fr));
   gap: clamp(10px, 1.5vw, 20px);
-  margin-top: clamp(32px, 5vh, 60px);
+  margin-top: clamp(48px, 8vh, 80px);
   opacity: 0;
-  transform: translateY(80px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(100px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .preview-grid.visible {
