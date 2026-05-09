@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page" :style="{ '--bg-brightness': bgBrightness }">
     <div class="hero-bg" :style="{ opacity: heroOpacity }"></div>
 
     <div class="hero-content">
@@ -41,15 +41,21 @@
           <p class="glass-text">探索我的创作世界，每一帧都是用心之作</p>
         </div>
 
-        <!-- Preview cards with scroll animation -->
-        <div ref="previewGrid" class="preview-grid" :class="{ visible: cardsVisible }">
-          <ProjectCard
+        <!-- Preview cards: each card individually animated -->
+        <div ref="previewGrid" class="preview-grid">
+          <div
             v-for="(project, i) in featuredProjects"
             :key="project.id"
-            :title="project.title"
-            :tags="project.tags"
-            :index="i"
-          />
+            :ref="(el) => { if (el) cardRefs[i] = el }"
+            class="card-wrapper"
+            :style="getCardStyle(i)"
+          >
+            <ProjectCard
+              :title="project.title"
+              :tags="project.tags"
+              :index="i"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -57,48 +63,79 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 import { projects } from '@/data/projects.js'
 
 const featuredProjects = projects.slice(0, 6)
 const heroOpacity = ref(1)
-const cardsVisible = ref(false)
 const glassVisible = ref(false)
 const previewGrid = ref(null)
 const glassBox = ref(null)
+const cardRefs = reactive([])
+const bgBrightness = ref(1)
+
+// Per-card visibility (0 = hidden, 1 = fully visible)
+const cardVisibility = reactive(Array(6).fill(0))
+
+function getCardStyle(i) {
+  const v = cardVisibility[i]
+  return {
+    opacity: 0.1 + v * 0.9,
+    transform: `translateY(${(1 - v) * 60}px)`,
+    transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
+  }
+}
 
 function handleScroll() {
   const scrollY = window.scrollY
   const maxScroll = window.innerHeight * 0.5
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
+
+  // Background brightness: dim by up to 50% as user scrolls
+  const maxDimScroll = window.innerHeight * 1.5
+  bgBrightness.value = Math.max(0.5, 1 - scrollY / maxDimScroll * 0.5)
+
+  // Sequential card reveal
+  if (!previewGrid.value) return
+  updateCardVisibility()
+}
+
+function updateCardVisibility() {
+  const vh = window.innerHeight
+  const gridTop = previewGrid.value.getBoundingClientRect().top
+  // Expose bottom edge to trigger zone calculation
+  const triggerStart = vh * 0.95  // cards start revealing when near viewport bottom
+
+  for (let i = 0; i < 6; i++) {
+    const el = cardRefs[i]
+    if (!el) continue
+    const rect = el.getBoundingClientRect()
+    // How far the card's center is from the trigger line
+    const cardCenter = rect.top + rect.height / 2
+    // Visibility: 0 when card center is at triggerStart, 1 when card is 200px above triggerStart
+    const revealZone = Math.max(60, rect.height * 0.6)
+    const raw = 1 - (cardCenter - (triggerStart - revealZone)) / revealZone
+    cardVisibility[i] = Math.max(0, Math.min(1, raw))
+  }
 }
 
 let observer = null
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
+  // Initial call
+  handleScroll()
 
-  // IntersectionObserver: glass box triggers early, cards trigger later
-  const thresholdSteps = Array.from({ length: 21 }, (_, i) => i * 0.05)
   observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      const ratio = entry.intersectionRatio
-      const target = entry.target
-
-      if (target === glassBox.value) {
-        glassVisible.value = ratio > 0.05
-      }
-      if (target === previewGrid.value) {
-        // Cards only become visible when scrolled well into view (>= 20%)
-        // and hide when near the top (< 15%)
-        cardsVisible.value = ratio >= 0.2
+      if (entry.target === glassBox.value) {
+        glassVisible.value = entry.intersectionRatio > 0.05
       }
     })
-  }, { threshold: thresholdSteps })
+  }, { threshold: [0, 0.1, 0.2] })
 
   if (glassBox.value) observer.observe(glassBox.value)
-  if (previewGrid.value) observer.observe(previewGrid.value)
 })
 
 onUnmounted(() => {
@@ -109,8 +146,12 @@ onUnmounted(() => {
 
 <style scoped>
 .home-page {
-  min-height: 100vh;
+  min-height: 200vh;
   position: relative;
+  background-color: var(--color-bg);
+  transition: background-color 0.4s ease;
+  /* Brightness overlay: dims the white bg as user scrolls */
+  filter: brightness(var(--bg-brightness));
 }
 
 .hero-bg {
@@ -135,8 +176,10 @@ onUnmounted(() => {
   align-items: flex-start;
 }
 
-/* Info card */
+/* Info card: sticky, doesn't scroll away */
 .info-card {
+  position: sticky;
+  top: calc(var(--nav-height) + 24px);
   width: clamp(240px, 18%, 320px);
   flex-shrink: 0;
   background: var(--color-white);
@@ -241,7 +284,7 @@ onUnmounted(() => {
   font-weight: 400;
 }
 
-/* Glass box: fixed width ~4 card units, 3x height */
+/* Glass box */
 .glass-box {
   margin-top: clamp(40px, 8vh, 80px);
   margin-bottom: clamp(40px, 6vh, 64px);
@@ -276,47 +319,43 @@ onUnmounted(() => {
   line-height: 1.8;
 }
 
-/* Preview grid: 1 column, large rectangular cards, scroll animation */
+/* Preview grid: 1 column, cards stagger-animated */
 .preview-grid {
   display: flex;
   flex-direction: column;
   gap: clamp(16px, 2.5vh, 28px);
   margin-top: clamp(48px, 8vh, 80px);
-  opacity: 0;
-  transform: translateY(100px);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-bottom: 40vh;
 }
 
-.preview-grid.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Override ProjectCard to large rectangle: w=4 units, h=1.5 units → ratio 8:3 */
-.preview-grid :deep(.project-card) {
+.card-wrapper {
   width: clamp(840px, 75vw, 1080px);
   max-width: 100%;
+}
+
+/* Override ProjectCard to large rectangle: ratio 8:3 */
+.card-wrapper :deep(.project-card) {
+  width: 100%;
   aspect-ratio: 8 / 3;
   flex-direction: row;
 }
 
-.preview-grid :deep(.card-thumbnail) {
+.card-wrapper :deep(.card-thumbnail) {
   flex: 1;
 }
 
-.preview-grid :deep(.card-info) {
+.card-wrapper :deep(.card-info) {
   flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.preview-grid :deep(.card-title) {
+.card-wrapper :deep(.card-title) {
   font-size: clamp(14px, 1.3vw, 18px);
 }
 
-.preview-grid :deep(.card-tags) {
+.card-wrapper :deep(.card-tags) {
   font-size: clamp(12px, 1vw, 14px);
 }
 
@@ -327,6 +366,7 @@ onUnmounted(() => {
   }
 
   .info-card {
+    position: static;
     width: 100%;
     min-height: auto;
     padding: 24px;
@@ -366,10 +406,6 @@ onUnmounted(() => {
 
   .title-block {
     padding-top: 24px;
-  }
-
-  .preview-grid {
-    transform: translateY(40px);
   }
 }
 </style>
