@@ -61,7 +61,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 import { projects } from '@/data/projects.js'
 
-const featuredProjects = projects.slice(0, 8)
+const featuredProjects = projects.slice(0, 6)
 const heroOpacity = ref(1)
 const cardsVisible = ref(false)
 const glassVisible = ref(false)
@@ -274,11 +274,11 @@ onUnmounted(() => {
   line-height: 1.8;
 }
 
-/* Preview grid: hidden initially, large scroll animation */
+/* Preview grid: 1 column, large rectangular cards, scroll animation */
 .preview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 12vw, 180px), 1fr));
-  gap: clamp(10px, 1.5vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5vh, 28px);
   margin-top: clamp(48px, 8vh, 80px);
   opacity: 0;
   transform: translateY(100px);
@@ -289,6 +289,31 @@ onUnmounted(() => {
 .preview-grid.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Override ProjectCard to large rectangle: w=4 units, h=1.5 units → ratio 8:3 */
+.preview-grid :deep(.project-card) {
+  aspect-ratio: 8 / 3;
+  flex-direction: row;
+}
+
+.preview-grid :deep(.card-thumbnail) {
+  flex: 1;
+}
+
+.preview-grid :deep(.card-info) {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preview-grid :deep(.card-title) {
+  font-size: clamp(14px, 1.3vw, 18px);
+}
+
+.preview-grid :deep(.card-tags) {
+  font-size: clamp(12px, 1vw, 14px);
 }
 
 @media (max-width: 1024px) {
