@@ -83,9 +83,9 @@ const cardVisibility = reactive(Array(6).fill(0))
 function getCardStyle(i) {
   const v = cardVisibility[i]
   return {
-    opacity: 0.7 + v * 0.3,
-    transform: `translateY(${(1 - v) * 60}px)`,
-    transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
+    opacity: 0.5 + v * 0.5,
+    transform: `translateY(${(1 - v) * 100}px)`,
+    transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
   }
 }
 
