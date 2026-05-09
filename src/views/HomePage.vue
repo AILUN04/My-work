@@ -83,7 +83,7 @@ const cardVisibility = reactive(Array(6).fill(0))
 function getCardStyle(i) {
   const v = cardVisibility[i]
   return {
-    opacity: 0.1 + v * 0.9,
+    opacity: 0.7 + v * 0.3,
     transform: `translateY(${(1 - v) * 60}px)`,
     transition: 'opacity 0.5s ease-out, transform 0.5s ease-out',
   }
@@ -271,6 +271,7 @@ onUnmounted(() => {
 .hero-right {
   flex: 1;
   min-width: 0;
+  padding-left: clamp(16px, 3vw, 48px);
 }
 
 /* Title */
@@ -345,30 +346,39 @@ onUnmounted(() => {
   max-width: 100%;
 }
 
-/* Override ProjectCard to large rectangle: ratio 8:3 */
+/* Override ProjectCard: image fills card, text at bottom-left */
 .card-wrapper :deep(.project-card) {
   width: 100%;
   aspect-ratio: 8 / 3;
-  flex-direction: row;
+  position: relative;
 }
 
 .card-wrapper :deep(.card-thumbnail) {
-  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .card-wrapper :deep(.card-info) {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 16px 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  color: var(--color-white);
+  z-index: 1;
 }
 
 .card-wrapper :deep(.card-title) {
   font-size: clamp(14px, 1.3vw, 18px);
+  color: #fff;
 }
 
 .card-wrapper :deep(.card-tags) {
   font-size: clamp(12px, 1vw, 14px);
+  color: rgba(255,255,255,0.8);
 }
 
 @media (max-width: 1024px) {

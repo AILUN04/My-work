@@ -47,8 +47,10 @@ const thumbnailStyle = computed(() => {
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
+  transform: scale(1.03);
   box-shadow: 0 8px 24px var(--color-shadow-hover);
+  outline: 2px solid var(--color-white);
+  outline-offset: 0;
 }
 
 .card-thumbnail {
