@@ -241,10 +241,12 @@ onUnmounted(() => {
   font-weight: 400;
 }
 
-/* Glass box: 3x height, overlaps card area */
+/* Glass box: fixed width ~4 card units, 3x height */
 .glass-box {
   margin-top: clamp(40px, 8vh, 80px);
   margin-bottom: clamp(40px, 6vh, 64px);
+  width: clamp(560px, 50vw, 720px);
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -293,6 +295,8 @@ onUnmounted(() => {
 
 /* Override ProjectCard to large rectangle: w=4 units, h=1.5 units → ratio 8:3 */
 .preview-grid :deep(.project-card) {
+  width: clamp(560px, 50vw, 720px);
+  max-width: 100%;
   aspect-ratio: 8 / 3;
   flex-direction: row;
 }
