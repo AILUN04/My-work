@@ -107,17 +107,19 @@ function updateCardVisibility() {
   const vh = window.innerHeight
   const gridTop = previewGrid.value.getBoundingClientRect().top
   // Expose bottom edge to trigger zone calculation
-  const triggerStart = vh * 0.95  // cards start revealing when near viewport bottom
+  // Each card reveals when its top edge enters the bottom quarter of viewport
+  const triggerBottom = vh * 0.85
+  const triggerTop = vh * 0.15
 
   for (let i = 0; i < 6; i++) {
     const el = cardRefs[i]
     if (!el) continue
     const rect = el.getBoundingClientRect()
-    // How far the card's center is from the trigger line
-    const cardCenter = rect.top + rect.height / 2
-    // Visibility: 0 when card center is at triggerStart, 1 when card is 200px above triggerStart
-    const revealZone = Math.max(60, rect.height * 0.6)
-    const raw = 1 - (cardCenter - (triggerStart - revealZone)) / revealZone
+    const cardTop = rect.top
+    const cardHeight = rect.height
+    // Fade zone: card top travels from triggerBottom to triggerTop
+    const zoneSize = triggerBottom - triggerTop
+    const raw = 1 - (cardTop - triggerTop) / zoneSize
     cardVisibility[i] = Math.max(0, Math.min(1, raw))
   }
 }
@@ -173,7 +175,7 @@ onUnmounted(() => {
   right: 0;
   height: 33.33vh;
   min-height: 240px;
-  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  background: url('/images/hero-bg.jpg') center/cover no-repeat;
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   z-index: 0;
@@ -366,7 +368,6 @@ onUnmounted(() => {
   bottom: 0;
   left: 0;
   padding: 16px 20px;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
   color: var(--color-white);
   z-index: 1;
 }
