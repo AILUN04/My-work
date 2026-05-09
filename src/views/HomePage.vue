@@ -173,8 +173,8 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  height: 55vh;
-  min-height: 400px;
+  height: 75vh;
+  min-height: 500px;
   background: url('/images/hero-bg.jpg') center/cover no-repeat;
   mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
