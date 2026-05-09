@@ -173,11 +173,11 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  height: 50vh;
-  min-height: 360px;
+  height: 55vh;
+  min-height: 400px;
   background: url('/images/hero-bg.jpg') center/cover no-repeat;
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
   z-index: 0;
 }
 
@@ -305,10 +305,10 @@ onUnmounted(() => {
   margin-bottom: clamp(40px, 6vh, 64px);
   width: clamp(840px, 75vw, 1080px);
   max-width: 100%;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(228, 228, 231, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0;
   padding: clamp(48px, 10vh, 96px) clamp(20px, 3vw, 40px);
   min-height: clamp(180px, 25vh, 320px);
