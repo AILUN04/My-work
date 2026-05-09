@@ -1,8 +1,6 @@
 <template>
   <div class="home-page">
     <div class="hero-bg" :style="{ opacity: heroOpacity }"></div>
-    <!-- Background dim overlay: darkens the white bg behind content only -->
-    <div class="bg-dim-overlay" :style="{ opacity: dimOpacity }"></div>
 
     <div class="hero-content">
       <aside class="info-card">
@@ -75,7 +73,6 @@ const glassVisible = ref(false)
 const previewGrid = ref(null)
 const glassBox = ref(null)
 const cardRefs = reactive([])
-const dimOpacity = ref(0)
 
 // Per-card visibility (0 = hidden, 1 = fully visible)
 const cardVisibility = reactive(Array(6).fill(0))
@@ -93,10 +90,6 @@ function handleScroll() {
   const scrollY = window.scrollY
   const maxScroll = window.innerHeight * 0.5
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
-
-  // Background overlay: darkens the white background behind content
-  const maxDimScroll = window.innerHeight * 1.5
-  dimOpacity.value = Math.min(0.35, scrollY / maxDimScroll * 0.35)
 
   // Sequential card reveal
   if (!previewGrid.value) return
@@ -153,19 +146,9 @@ onUnmounted(() => {
   min-height: 200vh;
   position: relative;
   background-color: var(--color-bg);
-}
-
-/* Dim overlay: darkens only the white background, not content */
-.bg-dim-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  pointer-events: none;
-  z-index: 0;
-  transition: opacity 0.3s ease;
+  /* Gradient dim: darkens toward bottom without hiding the base color */
+  background-image: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.12) 100%);
+  background-attachment: fixed;
 }
 
 .hero-bg {
