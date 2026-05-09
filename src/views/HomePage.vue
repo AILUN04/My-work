@@ -4,7 +4,7 @@
 
     <div class="hero-content">
       <aside class="info-card">
-        <img class="avatar" src="/images/avatar-placeholder.svg" alt="头像" />
+        <img class="avatar" src="/images/avatar-placeholder.jpg" alt="头像" />
         <div class="info-list">
           <div class="info-item">
             <span class="info-label">QQ</span>
