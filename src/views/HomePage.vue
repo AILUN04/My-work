@@ -1,6 +1,8 @@
 <template>
-  <div class="home-page" :style="{ '--bg-brightness': bgBrightness }">
+  <div class="home-page">
     <div class="hero-bg" :style="{ opacity: heroOpacity }"></div>
+    <!-- Background dim overlay: darkens the white bg behind content only -->
+    <div class="bg-dim-overlay" :style="{ opacity: dimOpacity }"></div>
 
     <div class="hero-content">
       <aside class="info-card">
@@ -73,7 +75,7 @@ const glassVisible = ref(false)
 const previewGrid = ref(null)
 const glassBox = ref(null)
 const cardRefs = reactive([])
-const bgBrightness = ref(1)
+const dimOpacity = ref(0)
 
 // Per-card visibility (0 = hidden, 1 = fully visible)
 const cardVisibility = reactive(Array(6).fill(0))
@@ -92,9 +94,9 @@ function handleScroll() {
   const maxScroll = window.innerHeight * 0.5
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
 
-  // Background brightness: dim by up to 50% as user scrolls
+  // Background overlay: darkens the white background behind content
   const maxDimScroll = window.innerHeight * 1.5
-  bgBrightness.value = Math.max(0.5, 1 - scrollY / maxDimScroll * 0.5)
+  dimOpacity.value = Math.min(0.35, scrollY / maxDimScroll * 0.35)
 
   // Sequential card reveal
   if (!previewGrid.value) return
@@ -149,9 +151,19 @@ onUnmounted(() => {
   min-height: 200vh;
   position: relative;
   background-color: var(--color-bg);
-  transition: background-color 0.4s ease;
-  /* Brightness overlay: dims the white bg as user scrolls */
-  filter: brightness(var(--bg-brightness));
+}
+
+/* Dim overlay: darkens only the white background, not content */
+.bg-dim-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
 }
 
 .hero-bg {
