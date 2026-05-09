@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar" :class="{ transparent: isHome }">
     <div class="navbar-inner">
       <router-link
         v-for="item in navItems"
         :key="item.path"
         :to="item.path"
         class="nav-link"
-        :class="{ active: currentPath === item.path }"
+        :class="{ active: currentPath === item.path, 'nav-light': isHome }"
       >
         {{ item.label }}
       </router-link>
@@ -28,6 +28,7 @@ const navItems = [
 ]
 
 const currentPath = computed(() => route.path)
+const isHome = computed(() => route.path === '/')
 </script>
 
 <style scoped>
@@ -42,6 +43,12 @@ const currentPath = computed(() => route.path)
   z-index: 100;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar.transparent {
+  background-color: transparent;
+  border-bottom-color: transparent;
 }
 
 .navbar-inner {
@@ -62,6 +69,19 @@ const currentPath = computed(() => route.path)
   border-bottom: 2px solid transparent;
   transition: color var(--transition-speed) ease,
               border-color var(--transition-speed) ease;
+}
+
+.nav-link.nav-light {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-link.nav-light:hover {
+  color: #fff;
+}
+
+.nav-link.nav-light.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.7);
 }
 
 .nav-link:hover {
