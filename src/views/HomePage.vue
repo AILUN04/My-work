@@ -27,6 +27,7 @@
             <span class="info-value">XX大学</span>
           </div>
         </div>
+        <router-link to="/contact" class="contact-btn">联系我</router-link>
       </aside>
 
       <div class="hero-right">
@@ -35,7 +36,13 @@
           <p class="subtitle">MENG MU is my online name</p>
         </div>
 
-        <div class="preview-grid">
+        <!-- Glass text box -->
+        <div ref="glassBox" class="glass-box" :class="{ visible: glassVisible }">
+          <p class="glass-text">探索我的创作世界，每一帧都是用心之作</p>
+        </div>
+
+        <!-- Preview cards with scroll animation -->
+        <div ref="previewGrid" class="preview-grid" :class="{ visible: cardsVisible }">
           <ProjectCard
             v-for="(project, i) in featuredProjects"
             :key="project.id"
@@ -56,6 +63,10 @@ import { projects } from '@/data/projects.js'
 
 const featuredProjects = projects.slice(0, 8)
 const heroOpacity = ref(1)
+const cardsVisible = ref(false)
+const glassVisible = ref(false)
+const previewGrid = ref(null)
+const glassBox = ref(null)
 
 function handleScroll() {
   const scrollY = window.scrollY
@@ -63,8 +74,35 @@ function handleScroll() {
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+let observer = null
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+
+  // IntersectionObserver for glass box + preview cards animation
+  const thresholdSteps = Array.from({ length: 21 }, (_, i) => i * 0.05)
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const ratio = entry.intersectionRatio
+      const target = entry.target
+
+      if (target === glassBox.value) {
+        glassVisible.value = ratio > 0.05
+      }
+      if (target === previewGrid.value) {
+        cardsVisible.value = ratio > 0.1
+      }
+    })
+  }, { threshold: thresholdSteps })
+
+  if (glassBox.value) observer.observe(glassBox.value)
+  if (previewGrid.value) observer.observe(previewGrid.value)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  if (observer) observer.disconnect()
+})
 </script>
 
 <style scoped>
@@ -95,7 +133,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   align-items: flex-start;
 }
 
-/* Info card: responsive width + height */
+/* Info card */
 .info-card {
   width: clamp(240px, 18%, 320px);
   flex-shrink: 0;
@@ -103,33 +141,35 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   box-shadow: 0 4px 16px var(--color-shadow);
-  padding: clamp(32px, 4%, 48px) clamp(20px, 2.5%, 32px) clamp(60px, 10vh, 100px);
-  position: relative;
-  min-height: clamp(400px, 55vh, 600px);
+  padding: clamp(28px, 3.5%, 44px) clamp(20px, 2.5%, 32px) clamp(24px, 3%, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vh, 24px);
+  min-height: clamp(440px, 60vh, 660px);
 }
 
+/* Avatar: left-aligned, in normal flow */
 .avatar {
   width: clamp(60px, 8vw, 80px);
   height: clamp(60px, 8vw, 80px);
-  position: absolute;
-  top: clamp(20px, 3%, 24px);
-  right: clamp(16px, 2.5%, 24px);
   border-radius: 0;
   border: 2px solid var(--color-border);
   background: var(--color-border);
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .info-list {
-  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.5vh, 28px);
+  gap: clamp(14px, 2vh, 24px);
+  flex: 1;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .info-label {
@@ -145,7 +185,32 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   font-weight: 500;
 }
 
-/* Right area: fills remaining space */
+/* Contact button at bottom of info card */
+.contact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #DBEAFE;
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 0;
+  border: 1px solid #BFDBFE;
+  text-decoration: none;
+  transition: background var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+  letter-spacing: 0.04em;
+  margin-top: auto;
+}
+
+.contact-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+/* Right area */
 .hero-right {
   flex: 1;
   min-width: 0;
@@ -174,11 +239,50 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   font-weight: 400;
 }
 
-/* Preview grid: fluid auto-fill, cards adapt to space */
+/* Glass box: between title and cards */
+.glass-box {
+  margin-top: clamp(16px, 2vh, 32px);
+  margin-bottom: clamp(24px, 4vh, 48px);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(228, 228, 231, 0.6);
+  border-radius: 0;
+  padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 40px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-box.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.glass-text {
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--color-secondary);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Preview grid: moved down, scroll animation */
 .preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(160px, 14vw, 200px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 12vw, 180px), 1fr));
   gap: clamp(10px, 1.5vw, 20px);
+  margin-top: clamp(32px, 5vh, 60px);
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview-grid.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (max-width: 1024px) {
@@ -191,23 +295,22 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     width: 100%;
     min-height: auto;
     padding: 24px;
-    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 16px;
     align-items: flex-start;
   }
 
   .avatar {
-    position: static;
     width: 64px;
     height: 64px;
     flex-shrink: 0;
+    align-self: flex-start;
   }
 
   .info-list {
     flex: 1;
     min-width: 200px;
-    margin-top: 0;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 16px 24px;
@@ -217,12 +320,21 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     flex: 1 1 120px;
   }
 
+  .contact-btn {
+    width: 100%;
+    margin-top: 0;
+  }
+
   .hero-right {
     width: 100%;
   }
 
   .title-block {
     padding-top: 24px;
+  }
+
+  .preview-grid {
+    transform: translateY(40px);
   }
 }
 </style>
