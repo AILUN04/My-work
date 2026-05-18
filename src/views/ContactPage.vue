@@ -7,23 +7,27 @@
       <div class="contact-info">
         <div class="contact-item">
           <span class="contact-label">QQ</span>
-          <span class="contact-value">1234567890</span>
+          <span class="contact-value">2130002774</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">微信</span>
+          <span class="contact-value">drx2130002774</span>
         </div>
         <div class="contact-item">
           <span class="contact-label">电话</span>
-          <span class="contact-value">138-xxxx-xxxx</span>
+          <span class="contact-value">18487127867</span>
         </div>
         <div class="contact-item">
           <span class="contact-label">邮箱</span>
-          <span class="contact-value">dingrongxin@example.com</span>
+          <span class="contact-value">18288906524@163.com</span>
         </div>
         <div class="contact-item">
           <span class="contact-label">所在城市</span>
-          <span class="contact-value">中国·XX</span>
+          <span class="contact-value">中国·昆明</span>
         </div>
         <div class="contact-item">
           <span class="contact-label">毕业院校</span>
-          <span class="contact-value">XX大学</span>
+          <span class="contact-value">云南国土资源职业学院</span>
         </div>
       </div>
     </div>
@@ -31,26 +35,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const scrollOffset = ref(0)
+
+const bgStyle = computed(() => ({
+  transform: `translateY(${scrollOffset.value}px)`,
+}))
 
 function handleScroll() {
   scrollOffset.value = window.scrollY * 0.4
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+})
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </script>
 
 <style scoped>
 .contact-page {
-  min-height: 100vh;
+  min-height: 111.1111vh;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-color: #000;
 }
 
 .contact-bg {
@@ -58,10 +69,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 40%, #334155 70%, #475569 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  height: 111.1111vh;
+  background: #000 url('/images/1.jpg') center/cover no-repeat;
   z-index: 0;
   will-change: transform;
 }
@@ -89,7 +98,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 40px;

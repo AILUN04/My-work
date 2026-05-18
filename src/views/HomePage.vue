@@ -3,28 +3,33 @@
     <div class="hero-bg" :style="{ opacity: heroOpacity }"></div>
 
     <div class="hero-content">
-      <aside class="info-card">
+      <aside class="info-card" :style="infoCardStyle">
         <img class="avatar" src="/images/avatar-placeholder.jpg" alt="头像" />
+        <p class="avatar-name">丁荣鑫</p>
         <div class="info-list">
           <div class="info-item">
             <span class="info-label">QQ</span>
-            <span class="info-value">1234567890</span>
+            <span class="info-value">2130002774</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">微信</span>
+            <span class="info-value">drx2130002774</span>
           </div>
           <div class="info-item">
             <span class="info-label">电话</span>
-            <span class="info-value">138-xxxx-xxxx</span>
+            <span class="info-value">18487127867</span>
           </div>
           <div class="info-item">
             <span class="info-label">邮箱</span>
-            <span class="info-value">dingrongxin@example.com</span>
+            <span class="info-value">18288906524@163.com</span>
           </div>
           <div class="info-item">
             <span class="info-label">城市</span>
-            <span class="info-value">中国·XX</span>
+            <span class="info-value">中国·昆明</span>
           </div>
           <div class="info-item">
             <span class="info-label">院校</span>
-            <span class="info-value">XX大学</span>
+            <span class="info-value">云南国土资源职业学院</span>
           </div>
         </div>
         <router-link to="/contact" class="contact-btn">联系我</router-link>
@@ -34,6 +39,7 @@
         <div class="title-block">
           <h1 class="main-title">Welcome to Ding Rongxin's website</h1>
           <p class="subtitle">MENG MU is my online name</p>
+          <p class="subtitle-trans">MENG MU 作为我的网名</p>
         </div>
 
         <!-- Glass text box -->
@@ -50,9 +56,19 @@
             class="card-wrapper"
             :style="getCardStyle(i)"
           >
-            <ProjectCard
+            <AeComparisonCard
+              v-if="project.comparison"
+              :after-video="project.comparison.after"
+              :before-video="project.comparison.before"
               :title="project.title"
               :tags="project.tags"
+            />
+            <ProjectCard
+              v-else
+              :title="project.title"
+              :tags="project.tags"
+              :thumbnail="project.thumbnail"
+              :videoUrl="project.videoUrl"
               :index="i"
             />
           </div>
@@ -63,12 +79,46 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import ProjectCard from '@/components/ProjectCard.vue'
+import AeComparisonCard from '@/components/AeComparisonCard.vue'
 import { projects } from '@/data/projects.js'
 
-const featuredProjects = projects.slice(0, 6)
+const featuredProjects = computed(() => [
+  projects[0], // So What
+  projects[1], // 凤龙山
+  projects[5], // 特效合成展示 04（VFX 卡片放第3列）
+  projects[2], // 昙华寺
+  projects[3], // 骑行
+  projects[4], // 100%做自己（末尾）
+])
 const heroOpacity = ref(1)
+const cardBgAlpha = ref(1)
+
+function lerpColor(hex1, hex2, t) {
+  const r1 = parseInt(hex1.slice(1, 3), 16)
+  const g1 = parseInt(hex1.slice(3, 5), 16)
+  const b1 = parseInt(hex1.slice(5, 7), 16)
+  const r2 = parseInt(hex2.slice(1, 3), 16)
+  const g2 = parseInt(hex2.slice(3, 5), 16)
+  const b2 = parseInt(hex2.slice(5, 7), 16)
+  const r = Math.round(r1 + (r2 - r1) * t)
+  const g = Math.round(g1 + (g2 - g1) * t)
+  const b = Math.round(b1 + (b2 - b1) * t)
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+const infoCardStyle = computed(() => {
+  const v = 255 * cardBgAlpha.value
+  const r = Math.round(v)
+  const t = Math.min(1, (1 - cardBgAlpha.value) / 0.2)
+  return {
+    background: `rgba(${r}, ${r}, ${r}, 0.7)`,
+    '--card-text-color': lerpColor('#18181B', '#FFFFFF', t),
+    '--card-muted-color': lerpColor('#71717A', '#CCCCCC', t),
+    '--card-accent-color': lerpColor('#2563EB', '#93BBFD', t),
+  }
+})
 const glassVisible = ref(false)
 const previewGrid = ref(null)
 const glassBox = ref(null)
@@ -76,12 +126,15 @@ const cardRefs = reactive([])
 
 // Per-card visibility (0 = hidden, 1 = fully visible)
 const cardVisibility = reactive(Array(6).fill(0))
+// Per-card float offset: only for cards below center (向上浮)
+const cardOffsets = reactive(Array(6).fill(0))
 
 function getCardStyle(i) {
   const v = cardVisibility[i]
+  const offset = cardOffsets[i] ?? 0
   return {
     opacity: 0.3 + v * 0.7,
-    transform: `translateY(${(1 - v) * 100}px)`,
+    transform: offset > 0 ? `translateY(${offset}px)` : 'none',
     transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
   }
 }
@@ -91,6 +144,13 @@ function handleScroll() {
   const maxScroll = window.innerHeight * 0.5
   heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
 
+  // 信息面板背景亮度随滚动降低（不影响内容）
+  const docHeight = document.documentElement.scrollHeight
+  const vh = window.innerHeight
+  const maxPossibleScroll = Math.max(1, docHeight - vh)
+  const progress = Math.min(1, scrollY / maxPossibleScroll)
+  cardBgAlpha.value = 1 - progress * 0.7
+
   // Sequential card reveal
   if (!previewGrid.value) return
   updateCardVisibility()
@@ -98,22 +158,36 @@ function handleScroll() {
 
 function updateCardVisibility() {
   const vh = window.innerHeight
-  const gridTop = previewGrid.value.getBoundingClientRect().top
-  // Expose bottom edge to trigger zone calculation
-  // Each card reveals when its top edge enters the bottom quarter of viewport
-  const triggerBottom = vh * 0.85
-  const triggerTop = vh * 0.15
+  const centerY = vh / 2
+  // 从中央向上下各延伸 45% 视口高度为渐显区间
+  const fadeZone = vh * 0.45
+
+  // 页面接近底部时，渐隐自动消解
+  const docHeight = document.documentElement.scrollHeight
+  const scrollY = window.scrollY
+  const maxScroll = Math.max(0, docHeight - vh)
+  const bottomBuffer = vh * 0.3
+  const bottomProximity = maxScroll > 0
+    ? Math.max(0, Math.min(1, (scrollY - (maxScroll - bottomBuffer)) / bottomBuffer))
+    : 1
 
   for (let i = 0; i < 6; i++) {
     const el = cardRefs[i]
     if (!el) continue
     const rect = el.getBoundingClientRect()
-    const cardTop = rect.top
-    const cardHeight = rect.height
-    // Fade zone: card top travels from triggerBottom to triggerTop
-    const zoneSize = triggerBottom - triggerTop
-    const raw = 1 - (cardTop - triggerTop) / zoneSize
-    cardVisibility[i] = Math.max(0, Math.min(1, raw))
+    const cardCenter = rect.top + rect.height / 2
+    const distFromCenter = Math.abs(cardCenter - centerY)
+    const raw = 1 - Math.min(1, distFromCenter / fadeZone)
+    const sv = Math.max(0, raw)
+    cardVisibility[i] = sv + (1 - sv) * bottomProximity
+
+    // 仅下方卡片有上浮位移，越过中央后位移归零
+    if (cardCenter > centerY) {
+      const distBelow = cardCenter - centerY
+      cardOffsets[i] = Math.min(80, (distBelow / fadeZone) * 80)
+    } else {
+      cardOffsets[i] = 0
+    }
   }
 }
 
@@ -143,9 +217,9 @@ onUnmounted(() => {
 
 <style scoped>
 .home-page {
-  min-height: 200vh;
+  min-height: 222.2222vh;
   position: relative;
-  background-color: var(--color-bg);
+  background-color: #101d25;
 }
 
 .hero-bg {
@@ -153,11 +227,11 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  height: 105vh;
+  height: 116.6667vh;
   min-height: 650px;
   background: url('/images/hero-bg.jpg') center/cover no-repeat;
-  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 69%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 69%, transparent 100%);
   z-index: 0;
 }
 
@@ -176,7 +250,6 @@ onUnmounted(() => {
   top: calc(var(--nav-height) + 24px);
   width: clamp(240px, 18%, 320px);
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--color-border);
@@ -200,6 +273,15 @@ onUnmounted(() => {
   align-self: flex-start;
 }
 
+.avatar-name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--card-text-color, var(--color-primary));
+  margin: 0;
+  align-self: flex-start;
+}
+
 .info-list {
   display: flex;
   flex-direction: column;
@@ -215,24 +297,24 @@ onUnmounted(() => {
 
 .info-label {
   font-size: clamp(11px, 1vw, 12px);
-  color: var(--color-muted);
+  color: var(--card-muted-color, var(--color-muted));
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .info-value {
   font-size: clamp(13px, 1.2vw, 15px);
-  color: var(--color-primary);
+  color: var(--card-text-color, var(--color-primary));
   font-weight: 500;
 }
 
-/* Contact button: muted, low saturation */
+/* Contact button */
 .contact-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(219, 234, 254, 0.5);
-  color: rgba(37, 99, 235, 0.65);
+  color: var(--card-accent-color, rgba(37, 99, 235, 0.65));
   font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 500;
@@ -268,16 +350,25 @@ onUnmounted(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 3.5vw, 3rem);
   font-weight: 700;
-  color: var(--color-primary);
+  color: #fff;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  margin-bottom: 4px;
 }
 
 .subtitle {
   font-family: var(--font-heading);
   font-size: clamp(1rem, 2vw, 1.4rem);
-  color: var(--color-secondary);
-  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 0;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.subtitle-trans {
+  font-size: clamp(0.7rem, 1.4vw, 0.98rem);
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
   font-weight: 400;
 }
 
@@ -311,7 +402,7 @@ onUnmounted(() => {
 .glass-text {
   font-family: var(--font-body);
   font-size: clamp(14px, 1.2vw, 18px);
-  color: var(--color-secondary);
+  color: rgba(255, 255, 255, 0.75);
   text-align: center;
   line-height: 1.8;
 }
@@ -362,6 +453,46 @@ onUnmounted(() => {
 .card-wrapper :deep(.card-tags) {
   font-size: clamp(12px, 1vw, 14px);
   color: rgba(255,255,255,0.8);
+}
+
+/* 隐藏播放键 */
+.card-wrapper :deep(.video-overlay) {
+  display: none;
+}
+
+/* 主页预览网格中的对比卡片 */
+.card-wrapper :deep(.ae-card) {
+  width: 100%;
+  aspect-ratio: 8 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-wrapper :deep(.ae-video-wrap) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.card-wrapper :deep(.ae-info) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 16px 20px;
+  z-index: 2;
+}
+
+.card-wrapper :deep(.ae-title) {
+  font-size: clamp(14px, 1.3vw, 18px);
+  color: #fff;
+}
+
+.card-wrapper :deep(.ae-tags) {
+  font-size: clamp(12px, 1vw, 14px);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 1024px) {

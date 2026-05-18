@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git commit -m ' *)",
-      "Bash(node -e \"const p=require\\('d:/vs code/work2/package-lock.json'\\); const deps=Object.keys\\(p.packages||{}\\); console.log\\('Total packages in lockfile:', deps.length\\);\")"
+      "Bash(node -e \"const p=require\\('d:/vs code/work2/package-lock.json'\\); const deps=Object.keys\\(p.packages||{}\\); console.log\\('Total packages in lockfile:', deps.length\\);\")",
+      "Bash(npx vite *)"
     ]
   }
 }

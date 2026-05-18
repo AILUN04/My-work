@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"/d/vs code/Microsoft VS Code/bin/code\" --install-extension claude-code-zhCn)",
+      "WebFetch(domain:marketplace.visualstudio.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(cat \"/c/Users/Administrator/AppData/Roaming/npm/node_modules/claudezh/package.json\")",
+      "Read(//c/Users/Administrator/AppData/Roaming/npm/node_modules/claudezh/**)",
+      "Bash(cat \"/c/Users/Administrator/AppData/Roaming/npm/node_modules/claudezh/README.md\" 2>/dev/null | head -60)",
+      "Bash(npx claudezh *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm run *)",
+      "Bash(start http://localhost:5173/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(start http://localhost:5173/projects)",
+      "Bash(cp -r \"d:/vs code/work2/zp\" \"d:/vs code/work2/public/zp\")",
+      "Bash(start http://localhost:5173/#/projects)",
+      "Bash(where ffmpeg *)",
+      "Bash(curl -s http://localhost:5173/src/views/ProjectsPage.vue)",
+      "Bash(curl -s \"http://localhost:5173/src/components/Lightbox.vue\")",
+      "Bash(curl -s \"http://localhost:5173/src/components/ProjectCard.vue\")",
+      "Bash(mv \"剪辑作品/100%做自己.mp4\" \"剪辑作品/100p做自己.mp4\")",
+      "Bash(mv \"剪辑作品/so what.mp4\" \"剪辑作品/so_what.mp4\")",
+      "Bash(mv \"特效作品/合成 1.mp4\" \"特效作品/合成1.mp4\")",
+      "Bash(mv \"特效作品/火焰尘埃、 合成 2_V1-0001.mov\" \"特效作品/火焰尘埃合成2_V1-0001.mov\")",
+      "Bash(mv \"摄影作品/CSC_0054 \\(2\\).jpg\" \"摄影作品/CSC_0054_2.jpg\")",
+      "Bash(mv \"摄影作品/DSC_0167 \\(1\\).jpg\" \"摄影作品/DSC_0167_1.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173/zp/%E6%91%84%E5%BD%B1%E4%BD%9C%E5%93%81/158c9e5c11f4677c24a71e767dc088ad.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173/\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173/zp/%E5%89%AA%E8%BE%91%E4%BD%9C%E5%93%81/so_what.mp4\")"
+    ]
+  }
+}

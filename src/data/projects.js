@@ -1,16 +1,70 @@
-export const projectCategories = ['全部项目', '剪辑作品', '特效作品', '摄影作品', '其他']
+export const projectCategories = ['全部项目', '摄影作品', '剪辑作品', '特效作品']
+
+const base = 'zp'
 
 export const projects = [
-  { id: 1, title: '城市夜景剪辑', category: '剪辑作品', tags: ['PR剪辑', '4K', '原创'], thumbnail: null },
-  { id: 2, title: '粒子特效展示', category: '特效作品', tags: ['AE', '粒子特效', '合成'], thumbnail: null },
-  { id: 3, title: '街头摄影集', category: '摄影作品', tags: ['街拍', '人文', 'Canon'], thumbnail: null },
-  { id: 4, title: '婚礼微电影', category: '剪辑作品', tags: ['达芬奇', '调色', '婚礼'], thumbnail: null },
-  { id: 5, title: '绿幕合成案例', category: '特效作品', tags: ['AE', '绿幕', '合成'], thumbnail: null },
-  { id: 6, title: '风光旅行片', category: '剪辑作品', tags: ['PR剪辑', '旅行', '原创'], thumbnail: null },
-  { id: 7, title: '产品广告片', category: '其他', tags: ['商业', '广告', '拍摄'], thumbnail: null },
-  { id: 8, title: '自然光摄影', category: '摄影作品', tags: ['自然光', '风光', 'Sony'], thumbnail: null },
-  { id: 9, title: 'MV剪辑作品', category: '剪辑作品', tags: ['MV', 'PR剪辑', '节奏'], thumbnail: null },
-  { id: 10, title: '三维合成展示', category: '特效作品', tags: ['C4D', '3D', '合成'], thumbnail: null },
-  { id: 11, title: '人像写真集', category: '摄影作品', tags: ['人像', '写真', '后期'], thumbnail: null },
-  { id: 12, title: '短视频包装', category: '其他', tags: ['包装', '字幕', '特效'], thumbnail: null },
+  // ===========================
+  // 剪辑作品（5）
+  // ===========================
+  { id: 2, title: 'So What', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/so_what.mp4`, thumbnail: `${base}/剪辑作品/视频封面/so_what.png` },
+  { id: 3, title: '凤龙山', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/凤龙山2.mp4`, thumbnail: `${base}/剪辑作品/视频封面/封龙山2.png` },
+  { id: 4, title: '昙华寺', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/昙华寺.mp4`, thumbnail: `${base}/剪辑作品/视频封面/昙华寺.png` },
+  { id: 5, title: '骑行', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/骑行.mp4`, thumbnail: `${base}/剪辑作品/视频封面/骑行.png` },
+  { id: 1, title: '100%做自己', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/100p做自己.mp4`, thumbnail: `${base}/剪辑作品/视频封面/100做自己.png` },
+
+  // ===========================
+  // 特效作品 — 前后对比（原片 ↔ 特效合成）
+  // ===========================
+  { id: 9, title: '特效合成展示 04', category: '特效作品', tags: ['AE', 'MG动画', '合成'],
+    videoUrl: `${base}/特效作品/特效合成/4.mov`,
+    comparison: { after: `${base}/特效作品/特效合成/4.mov`, before: `${base}/特效作品/原片/04.mov` } },
+  { id: 6, title: '特效合成展示 01', category: '特效作品', tags: ['AE', '合成', '特效'],
+    videoUrl: `${base}/特效作品/特效合成/1.mov`,
+    comparison: { after: `${base}/特效作品/特效合成/1.mov`, before: `${base}/特效作品/原片/01.mov` } },
+  { id: 7, title: '特效合成展示 02', category: '特效作品', tags: ['AE', '绿幕', '合成'],
+    videoUrl: `${base}/特效作品/特效合成/2.mov`,
+    comparison: { after: `${base}/特效作品/特效合成/2.mov`, before: `${base}/特效作品/原片/02.mov` } },
+  { id: 8, title: '特效合成展示 03', category: '特效作品', tags: ['AE', '3D', '合成'],
+    videoUrl: `${base}/特效作品/特效合成/3.mov`,
+    comparison: { after: `${base}/特效作品/特效合成/3.mov`, before: `${base}/特效作品/原片/03.mov` } },
+
+  // ===========================
+  // 摄影作品（36 张，每张独立卡片）
+  // ===========================
+  { id: 101, title: '记忆1', category: '摄影作品', tags: ['风光', '自然'], thumbnail: `${base}/摄影作品/158c9e5c11f4677c24a71e767dc088ad.jpg` },
+  { id: 102, title: '记忆2', category: '摄影作品', tags: ['风光', '光影'], thumbnail: `${base}/摄影作品/1b96492654c4b20433f719d876a47989.jpg` },
+  { id: 103, title: '记忆3', category: '摄影作品', tags: ['风光', '静物'], thumbnail: `${base}/摄影作品/2209637251812e421018143c41d674d4.jpg` },
+  { id: 104, title: '记忆4', category: '摄影作品', tags: ['自然', '静物'], thumbnail: `${base}/摄影作品/2768a015712e3995dfc4f6aad216040d.jpg` },
+  { id: 105, title: '记忆5', category: '摄影作品', tags: ['光影', '人像'], thumbnail: `${base}/摄影作品/292d9f7b27be0fd64bebeaadb643d534.jpg` },
+  { id: 106, title: '记忆6', category: '摄影作品', tags: ['自然', '静物'], thumbnail: `${base}/摄影作品/2fc5f50c8dc5c2643a776f24f44250b2.jpg` },
+  { id: 107, title: '记忆7', category: '摄影作品', tags: ['光影', '人像'], thumbnail: `${base}/摄影作品/334ef11328540bfc01386b2bf70f33b8.jpg` },
+  { id: 108, title: '记忆8', category: '摄影作品', tags: ['光影', '静物'], thumbnail: `${base}/摄影作品/48d18bc183444bae7cfcbeb7719189e6.jpg` },
+  { id: 109, title: '记忆9', category: '摄影作品', tags: ['光影', '纪实'], thumbnail: `${base}/摄影作品/4d7bf56ccc75a5e3d80920ca188717b9.jpg` },
+  { id: 110, title: '记忆10', category: '摄影作品', tags: ['光影', '建筑'], thumbnail: `${base}/摄影作品/4f6e2f3dba1029d1755737e0ea57b397.jpg` },
+  { id: 111, title: '记忆11', category: '摄影作品', tags: ['纪实', '光影'], thumbnail: `${base}/摄影作品/50d156d0bca2ac616b9a9dc3db5e2e26.jpg` },
+  { id: 112, title: '记忆12', category: '摄影作品', tags: ['纪实', '静物'], thumbnail: `${base}/摄影作品/546c06fbe6c009e57dc9e979d977482a.jpg` },
+  { id: 113, title: '记忆13', category: '摄影作品', tags: ['自然', '静物'], thumbnail: `${base}/摄影作品/567b8dc9af56077af78fae44abd81bb7.jpg` },
+  { id: 114, title: '记忆14', category: '摄影作品', tags: ['纪实', '人像'], thumbnail: `${base}/摄影作品/5f16d7715f5f7c59552db83f50f3384b.jpg` },
+  { id: 115, title: '记忆15', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/656872d9b6f5acf2f1eee40dba95c004.jpg` },
+  { id: 116, title: '记忆16', category: '摄影作品', tags: ['纪实', '风光'], thumbnail: `${base}/摄影作品/6c1dc94a09250d4d2a51ca19c02e1563.jpg` },
+  { id: 117, title: '记忆17', category: '摄影作品', tags: ['光影', '纪实'], thumbnail: `${base}/摄影作品/79a9e1dbbc10ea61d37363b18ffb3679.jpg` },
+  { id: 118, title: '记忆18', category: '摄影作品', tags: ['建筑', '风光'], thumbnail: `${base}/摄影作品/82b3677542f96a648f395c85a5b1aed5.jpg` },
+  { id: 119, title: '记忆19', category: '摄影作品', tags: ['静物', '光影'], thumbnail: `${base}/摄影作品/947cb903e8fee9a307d268dd05fa335c.jpg` },
+  { id: 120, title: '记忆20', category: '摄影作品', tags: ['静物', '纪实'], thumbnail: `${base}/摄影作品/95a4e9a2ed9a4f42278173d03289fd80.jpg` },
+  { id: 121, title: '记忆21', category: '摄影作品', tags: ['静物', '光影'], thumbnail: `${base}/摄影作品/9857af54d58c7d567efc5334d3bc546f.jpg` },
+  { id: 122, title: '记忆22', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/CSC_0054_2.jpg` },
+  { id: 123, title: '记忆23', category: '摄影作品', tags: ['风光', '建筑'], thumbnail: `${base}/摄影作品/DSC_0167_1.jpg` },
+  { id: 124, title: '记忆24', category: '摄影作品', tags: ['纪实', '光影'], thumbnail: `${base}/摄影作品/IMG_20230213_173115.jpg` },
+  { id: 125, title: '记忆25', category: '摄影作品', tags: ['风光', '自然'], thumbnail: `${base}/摄影作品/IMG_20230317_173436.jpg` },
+  { id: 126, title: '记忆26', category: '摄影作品', tags: ['风光', '自然'], thumbnail: `${base}/摄影作品/IMG_20230703_220241.jpg` },
+  { id: 127, title: '记忆27', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/a6418f7a7b7c32315de47e16652503b7.jpg` },
+  { id: 128, title: '记忆28', category: '摄影作品', tags: ['自然', '光影'], thumbnail: `${base}/摄影作品/a9cd14278950202a72d11cf47c27f696.jpg` },
+  { id: 129, title: '记忆29', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/aafd3f045a641537c87dce019be8aa23.jpg` },
+  { id: 130, title: '记忆30', category: '摄影作品', tags: ['纪实', '建筑'], thumbnail: `${base}/摄影作品/ada8bafc381bfcfcfd8361ff15ee8c88.jpg` },
+  { id: 131, title: '记忆31', category: '摄影作品', tags: ['建筑', '风光'], thumbnail: `${base}/摄影作品/cb6c1c98069aecf479e8a3c0436d2aff.jpg` },
+  { id: 132, title: '记忆32', category: '摄影作品', tags: ['纪实', '建筑'], thumbnail: `${base}/摄影作品/dddf9fad9fb5cbc00b78a029a4fe2312.jpg` },
+  { id: 133, title: '记忆33', category: '摄影作品', tags: ['纪实', '建筑'], thumbnail: `${base}/摄影作品/de13c8ee9cd2a330e55dd4d68b43d3d2.jpg` },
+  { id: 134, title: '记忆34', category: '摄影作品', tags: ['风光', '建筑'], thumbnail: `${base}/摄影作品/dfa4b96754fca182954a12f76e00ca59.jpg` },
+  { id: 135, title: '记忆35', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/f30bb1f58a04320f71b84329df1cabad.jpg` },
+  { id: 136, title: '记忆36', category: '摄影作品', tags: ['自然', '风光'], thumbnail: `${base}/摄影作品/f97c99afc2a8c6fc729b8927c13b306c.jpg` },
 ]

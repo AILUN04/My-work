@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**对话语言：所有回复、思考和代码注释均使用中文。**
+
 ## 项目概述
 
 丁荣鑫个人作品集网站，4 页面单页应用（SPA）。
@@ -49,3 +51,10 @@ src/
 ## 设计规范参考
 
 详见 `docs/superpowers/specs/2026-05-08-portfolio-website-design.md`
+
+## Development Environment
+- OS: Windows 10.0.19045
+- Shell: Git Bash
+- Path format: Windows (use forward slashes in Git Bash)
+- File system: Case-insensitive
+- Line endings: CRLF (configure Git autocrlf)
