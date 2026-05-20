@@ -95,7 +95,8 @@ portfolio/
 │           └── global.css
 └── public/
     └── images/
-        └── (placeholder images)
+        └── (pl
+        aceholder images)
 ```
 
 ---
