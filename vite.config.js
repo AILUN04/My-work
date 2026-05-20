@@ -8,5 +8,21 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  build: {
+    target: 'es2020',
+    modulePreload: {
+      polyfill: false
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vue-vendor': ['vue', 'vue-router']
+        }
+      }
+    }
+  },
+  css: {
+    devSourcemap: false
   }
 })

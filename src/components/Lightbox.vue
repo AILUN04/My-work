@@ -10,20 +10,22 @@
         </button>
 
         <div class="lightbox-content">
-          <video
-            v-if="item.videoUrl"
-            :src="item.videoUrl"
-            class="lightbox-media"
-            controls
-            autoplay
-            playsinline
-          ></video>
-          <img
-            v-else
-            :src="item.thumbnail"
-            :alt="item.title"
-            class="lightbox-media"
-          />
+          <div class="lightbox-media-wrap watermark">
+            <video
+              v-if="item.videoUrl"
+              :src="item.videoUrl"
+              class="lightbox-media"
+              controls
+              autoplay
+              playsinline
+            ></video>
+            <img
+              v-else
+              :src="item.thumbnail"
+              :alt="item.title"
+              class="lightbox-media"
+            />
+          </div>
           <div class="lightbox-caption">
             <h3 class="lightbox-title">{{ item.title }}</h3>
             <p class="lightbox-tags">{{ (item.tags || []).join(' / ') }}</p>
@@ -104,6 +106,11 @@ watch(() => props.visible, (v) => {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+}
+
+.lightbox-media-wrap {
+  display: inline-block;
+  line-height: 0;
 }
 
 .lightbox-media {

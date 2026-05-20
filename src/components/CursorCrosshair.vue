@@ -23,8 +23,8 @@ function resize() {
 }
 
 function onMouseMove(e) {
-  mouseX = e.clientX / 0.9
-  mouseY = e.clientY / 0.9
+  mouseX = e.clientX
+  mouseY = e.clientY
   points.push({ x: mouseX, y: mouseY, born: performance.now() })
   if (points.length > MAX_POINTS) points.shift()
   if (!running) {

@@ -1,4 +1,4 @@
-export const projectCategories = ['全部项目', '摄影作品', '剪辑作品', '特效作品']
+export const projectCategories = ['全部项目', '特效作品', '剪辑作品', '摄影作品']
 
 const base = 'zp'
 
@@ -7,26 +7,46 @@ export const projects = [
   // 剪辑作品（5）
   // ===========================
   { id: 2, title: 'So What', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/so_what.mp4`, thumbnail: `${base}/剪辑作品/视频封面/so_what.png` },
-  { id: 3, title: '凤龙山', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/凤龙山2.mp4`, thumbnail: `${base}/剪辑作品/视频封面/封龙山2.png` },
   { id: 4, title: '昙华寺', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/昙华寺.mp4`, thumbnail: `${base}/剪辑作品/视频封面/昙华寺.png` },
+  { id: 3, title: '凤龙山', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/凤龙山2.mp4`, thumbnail: `${base}/剪辑作品/视频封面/封龙山2.png` },
   { id: 5, title: '骑行', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/骑行.mp4`, thumbnail: `${base}/剪辑作品/视频封面/骑行.png` },
   { id: 1, title: '100%做自己', category: '剪辑作品', tags: ['剪辑', '原创'], videoUrl: `${base}/剪辑作品/100p做自己.mp4`, thumbnail: `${base}/剪辑作品/视频封面/100做自己.png` },
 
   // ===========================
   // 特效作品 — 前后对比（原片 ↔ 特效合成）
   // ===========================
-  { id: 9, title: '特效合成展示 04', category: '特效作品', tags: ['AE', 'MG动画', '合成'],
+  { id: 9, title: 'AE火焰粒子特效实景合成', category: '特效作品', tags: ['AE', '特效合成'],
     videoUrl: `${base}/特效作品/特效合成/4.mov`,
-    comparison: { after: `${base}/特效作品/特效合成/4.mov`, before: `${base}/特效作品/原片/04.mov` } },
-  { id: 6, title: '特效合成展示 01', category: '特效作品', tags: ['AE', '合成', '特效'],
+    comparison: { after: `${base}/特效作品/特效合成/4.mov`, before: `${base}/特效作品/原片/04.mov` },
+	    process: `${base}/过程1.png` },
+  { id: 6, title: 'AE火焰粒子特效实景合成2', category: '特效作品', tags: ['AE', '特效合成'],
     videoUrl: `${base}/特效作品/特效合成/1.mov`,
-    comparison: { after: `${base}/特效作品/特效合成/1.mov`, before: `${base}/特效作品/原片/01.mov` } },
-  { id: 7, title: '特效合成展示 02', category: '特效作品', tags: ['AE', '绿幕', '合成'],
+    comparison: { after: `${base}/特效作品/特效合成/1.mov`, before: `${base}/特效作品/原片/01.mov` },
+	    process: `${base}/过程2.png` },
+  { id: 7, title: 'AE火焰粒子特效实景合成3', category: '特效作品', tags: ['AE', '特效合成'],
     videoUrl: `${base}/特效作品/特效合成/2.mov`,
-    comparison: { after: `${base}/特效作品/特效合成/2.mov`, before: `${base}/特效作品/原片/02.mov` } },
-  { id: 8, title: '特效合成展示 03', category: '特效作品', tags: ['AE', '3D', '合成'],
+    comparison: { after: `${base}/特效作品/特效合成/2.mov`, before: `${base}/特效作品/原片/02.mov` },
+	    process: `${base}/过程3.png` },
+  { id: 8, title: 'AE火焰粒子特效实景合成4', category: '特效作品', tags: ['AE', '特效合成'],
     videoUrl: `${base}/特效作品/特效合成/3.mov`,
-    comparison: { after: `${base}/特效作品/特效合成/3.mov`, before: `${base}/特效作品/原片/03.mov` } },
+    comparison: { after: `${base}/特效作品/特效合成/3.mov`, before: `${base}/特效作品/原片/03.mov` },
+	    process: `${base}/过程4.png` },
+  { id: 10, title: 'AE跟踪AI特效合成5', category: '特效作品', tags: ['AE', 'AI', '特效合成'],
+    videoUrl: `${base}/AI特效合成/AI调整/5.mp4`,
+    comparison: { after: `${base}/AI特效合成/AI调整/5.mp4`, before: `${base}/AI特效合成/AE跟踪/05.mp4` },
+    processVideo: `${base}/AI特效合成/原素材/005.mp4` },
+  { id: 11, title: 'AE跟踪AI特效合成6', category: '特效作品', tags: ['AE', 'AI', '特效合成'],
+    videoUrl: `${base}/AI特效合成/AI调整/6.mp4`,
+    comparison: { after: `${base}/AI特效合成/AI调整/6.mp4`, before: `${base}/AI特效合成/AE跟踪/06.mp4` },
+    processVideo: `${base}/AI特效合成/原素材/006.mp4` },
+  { id: 12, title: 'AE跟踪AI特效合成7', category: '特效作品', tags: ['AE', 'AI', '特效合成'],
+    videoUrl: `${base}/AI特效合成/AI调整/7.mp4`,
+    comparison: { after: `${base}/AI特效合成/AI调整/7.mp4`, before: `${base}/AI特效合成/AE跟踪/07.mp4` },
+    processVideo: `${base}/AI特效合成/原素材/007.mp4` },
+  { id: 13, title: 'AE跟踪AI特效合成8', category: '特效作品', tags: ['AE', 'AI', '特效合成'],
+    videoUrl: `${base}/AI特效合成/AI调整/8.mp4`,
+    comparison: { after: `${base}/AI特效合成/AI调整/8.mp4`, before: `${base}/AI特效合成/AE跟踪/08.mp4` },
+    processVideo: `${base}/AI特效合成/原素材/008.mp4` },
 
   // ===========================
   // 摄影作品（36 张，每张独立卡片）

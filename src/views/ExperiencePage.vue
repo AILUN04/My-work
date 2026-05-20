@@ -8,7 +8,7 @@
       <div class="card-stage">
         <Transition name="crossfade" mode="out-in">
           <div class="exp-card" :key="activeExperience.id">
-            <div class="card-image" :style="imageStyle">
+            <div class="card-image watermark" :style="imageStyle">
               <div v-if="!activeExperience.image" class="image-placeholder">
                 <span>{{ activeExperience.software }}</span>
               </div>
@@ -47,7 +47,7 @@ const imageStyle = computed(() => {
 
 <style scoped>
 .experience-page {
-  min-height: 111.1111vh;
+  min-height: 100vh;
   background-color: var(--color-bg);
 }
 

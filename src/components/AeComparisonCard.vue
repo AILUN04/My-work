@@ -1,6 +1,6 @@
 <template>
   <div class="ae-card" ref="cardEl">
-    <div class="ae-video-wrap" ref="videoWrap">
+    <div class="ae-video-wrap watermark" ref="videoWrap">
       <!-- 左边：特效合成 -->
       <video
         ref="afterVideoEl"
@@ -52,11 +52,11 @@
       </div>
 
       <!-- 左右标签 -->
-      <span v-if="videosReady" class="ae-label ae-label-after">特效合成</span>
-      <span v-if="videosReady" class="ae-label ae-label-before">原片</span>
+      <span v-if="videosReady" class="ae-label ae-label-after">{{ afterLabel }}</span>
+      <span v-if="videosReady" class="ae-label ae-label-before">{{ beforeLabel }}</span>
     </div>
 
-    <div class="ae-info">
+    <div v-if="!hideInfo" class="ae-info">
       <h3 class="ae-title">{{ title }}</h3>
       <p class="ae-tags">{{ tags.join(' / ') }}</p>
     </div>
@@ -71,6 +71,9 @@ const props = defineProps({
   beforeVideo: { type: String, required: true },
   title: { type: String, required: true },
   tags: { type: Array, default: () => [] },
+  afterLabel: { type: String, default: '特效合成' },
+  beforeLabel: { type: String, default: '原片' },
+  hideInfo: { type: Boolean, default: false },
 })
 
 defineEmits(['select'])

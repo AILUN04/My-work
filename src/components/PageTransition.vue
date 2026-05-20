@@ -10,20 +10,22 @@
 .page-enter-active {
   transition: opacity var(--transition-speed) ease-out,
               transform var(--transition-speed) ease-out;
+  will-change: transform, opacity;
 }
 
 .page-leave-active {
   transition: opacity var(--transition-speed) ease-in,
               transform var(--transition-speed) ease-in;
+  will-change: transform, opacity;
 }
 
 .page-enter-from {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(12px);
 }
 
 .page-leave-to {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(-12px);
 }
 </style>

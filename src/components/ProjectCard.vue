@@ -1,6 +1,6 @@
 <template>
   <div class="project-card" @click="$emit('select', { title, tags, thumbnail, videoUrl })">
-    <div class="card-thumbnail" :style="thumbnailStyle">
+    <div class="card-thumbnail watermark" :style="thumbnailStyle">
       <div v-if="videoUrl && !thumbnailDataUrl && !thumbnail" class="frame-loading">
         <span class="loading-dot"></span>
       </div>
@@ -97,6 +97,7 @@ onMounted(async () => {
   cursor: pointer;
   transition: transform var(--transition-speed) ease,
               box-shadow var(--transition-speed) ease;
+  will-change: transform;
 }
 
 .project-card:hover {

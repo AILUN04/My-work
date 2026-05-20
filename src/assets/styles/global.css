@@ -21,7 +21,7 @@ body {
 }
 
 #app {
-  zoom: 0.9;
+  /* 不使用 zoom（触发强制重排），改用 transform 或直接 100% 渲染 */
 }
 
 a {
@@ -50,4 +50,28 @@ button {
 /* Navbar offset for all pages */
 .page-content {
   padding-top: var(--nav-height);
+}
+
+/* ============================
+   水印：作品画面下半部分
+   ============================ */
+.watermark {
+  position: relative;
+}
+
+.watermark::after {
+  content: '－  MENG MU  －';
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: clamp(10px, 0.85vw, 13px);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }

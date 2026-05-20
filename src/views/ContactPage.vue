@@ -43,8 +43,14 @@ const bgStyle = computed(() => ({
   transform: `translateY(${scrollOffset.value}px)`,
 }))
 
+let scrollTicking = false
 function handleScroll() {
-  scrollOffset.value = window.scrollY * 0.4
+  if (scrollTicking) return
+  scrollTicking = true
+  requestAnimationFrame(() => {
+    scrollOffset.value = window.scrollY * 0.4
+    scrollTicking = false
+  })
 }
 
 onMounted(() => {
@@ -55,7 +61,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 <style scoped>
 .contact-page {
-  min-height: 111.1111vh;
+  min-height: 100vh;
   position: relative;
   display: flex;
   align-items: center;
@@ -69,10 +75,11 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   top: 0;
   left: 0;
   width: 100%;
-  height: 111.1111vh;
+  height: 100vh;
   background: #000 url('/images/1.jpg') center/cover no-repeat;
   z-index: 0;
   will-change: transform;
+  transform: translateZ(0);
 }
 
 .contact-content {

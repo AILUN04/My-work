@@ -44,7 +44,7 @@
 
         <!-- Glass text box -->
         <div ref="glassBox" class="glass-box" :class="{ visible: glassVisible }">
-          <p class="glass-text">探索我的创作世界，每一帧都是用心之作</p>
+          <p class="glass-text">欢迎来到我的领域，希望您能从这里充分了解我。</p>
         </div>
 
         <!-- Preview cards: each card individually animated -->
@@ -86,9 +86,9 @@ import { projects } from '@/data/projects.js'
 
 const featuredProjects = computed(() => [
   projects[0], // So What
-  projects[1], // 凤龙山
+  projects[2], // 凤龙山
   projects[5], // 特效合成展示 04（VFX 卡片放第3列）
-  projects[2], // 昙华寺
+  projects[1], // 昙华寺
   projects[3], // 骑行
   projects[4], // 100%做自己（末尾）
 ])
@@ -139,21 +139,24 @@ function getCardStyle(i) {
   }
 }
 
+let scrollTicking = false
 function handleScroll() {
-  const scrollY = window.scrollY
-  const maxScroll = window.innerHeight * 0.5
-  heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
+  if (scrollTicking) return
+  scrollTicking = true
+  requestAnimationFrame(() => {
+    const scrollY = window.scrollY
+    const maxScroll = window.innerHeight * 0.5
+    heroOpacity.value = Math.max(0, 1 - scrollY / maxScroll)
 
-  // 信息面板背景亮度随滚动降低（不影响内容）
-  const docHeight = document.documentElement.scrollHeight
-  const vh = window.innerHeight
-  const maxPossibleScroll = Math.max(1, docHeight - vh)
-  const progress = Math.min(1, scrollY / maxPossibleScroll)
-  cardBgAlpha.value = 1 - progress * 0.7
+    const docHeight = document.documentElement.scrollHeight
+    const vh = window.innerHeight
+    const maxPossibleScroll = Math.max(1, docHeight - vh)
+    const progress = Math.min(1, scrollY / maxPossibleScroll)
+    cardBgAlpha.value = 1 - progress * 0.7
 
-  // Sequential card reveal
-  if (!previewGrid.value) return
-  updateCardVisibility()
+    if (previewGrid.value) updateCardVisibility()
+    scrollTicking = false
+  })
 }
 
 function updateCardVisibility() {
@@ -217,7 +220,7 @@ onUnmounted(() => {
 
 <style scoped>
 .home-page {
-  min-height: 222.2222vh;
+  min-height: 200vh;
   position: relative;
   background-color: #101d25;
 }
@@ -227,7 +230,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  height: 116.6667vh;
+  height: 105vh;
   min-height: 650px;
   background: url('/images/hero-bg.jpg') center/cover no-repeat;
   mask-image: linear-gradient(to bottom, black 69%, transparent 100%);
@@ -260,6 +263,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: clamp(16px, 2vh, 24px);
   min-height: clamp(440px, 60vh, 660px);
+  will-change: transform;
 }
 
 /* Avatar: left-aligned, in normal flow */
@@ -388,6 +392,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform, opacity;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
@@ -419,6 +424,7 @@ onUnmounted(() => {
 .card-wrapper {
   width: clamp(840px, 75vw, 1080px);
   max-width: 100%;
+  contain: layout style paint;
 }
 
 /* Override ProjectCard: image fills card, text at bottom-left */
