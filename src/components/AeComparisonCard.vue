@@ -10,7 +10,7 @@
         muted
         loop
         playsinline
-        preload="auto"
+        preload="none"
         @loadedmetadata="onMetaLoaded"
         @error="onMetaLoaded"
       ></video>
@@ -23,7 +23,7 @@
         muted
         loop
         playsinline
-        preload="auto"
+        preload="none"
         @loadedmetadata="onMetaLoaded"
         @error="onMetaLoaded"
       ></video>

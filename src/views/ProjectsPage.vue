@@ -36,7 +36,7 @@
           />
           <div class="card-right-panel">
             <div class="process-card" @click="openProcessLightbox(project)">
-              <video v-if="project.processVideo" :src="project.processVideo" class="process-img" autoplay loop muted playsinline preload="auto"></video>
+              <video v-if="project.processVideo" :src="project.processVideo" class="process-img" autoplay loop muted playsinline preload="none"></video>
               <img v-else-if="project.process" :src="project.process" :alt="project.title" class="process-img" />
               <span v-if="project.processVideo" class="process-label">原片</span>
             </div>
@@ -87,7 +87,7 @@
           />
           <div class="card-right-panel">
             <div class="process-card" @click="openProcessLightbox(project)">
-              <video v-if="project.processVideo" :src="project.processVideo" class="process-img" autoplay loop muted playsinline preload="auto"></video>
+              <video v-if="project.processVideo" :src="project.processVideo" class="process-img" autoplay loop muted playsinline preload="none"></video>
               <img v-else-if="project.process" :src="project.process" :alt="project.title" class="process-img" />
               <span v-if="project.processVideo" class="process-label">原片</span>
             </div>
