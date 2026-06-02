@@ -86,13 +86,20 @@ const beforeVideoEl = ref(null)
 const dividerPct = ref(50)
 const videosReady = ref(false)
 const metaLoadedCount = ref(0)
+let safetyTimer = null  // 超时兜底：避免视频加载卡死
 
 function onMetaLoaded() {
   metaLoadedCount.value++
   if (metaLoadedCount.value >= 2) {
-    videosReady.value = true
-    nextTick(() => playBoth())
+    showComparison()
   }
+}
+
+function showComparison() {
+  if (videosReady.value) return
+  clearTimeout(safetyTimer)
+  videosReady.value = true
+  nextTick(() => playBoth())
 }
 
 // ============================
@@ -119,6 +126,13 @@ function pauseBoth() {
 let observer = null
 
 onMounted(() => {
+  // 超时兜底：8 秒后无论视频元数据是否就绪都强制显示（避免网络/格式问题卡死）
+  safetyTimer = setTimeout(() => {
+    if (!videosReady.value) {
+      showComparison()
+    }
+  }, 8000)
+
   observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -133,6 +147,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  clearTimeout(safetyTimer)
   if (observer) observer.disconnect()
 })
 
